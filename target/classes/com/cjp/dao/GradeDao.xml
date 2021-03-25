@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cjp.dao.GradeDao">
+	<!--如果列名重复了，可以使用别名-->
+	<resultMap id="gradeMap" type="grade">
+		<id column="id" property="id"></id>
+		<result property="score" column="score"></result>
+		<result column="gpa" property="gpa"></result>
+		<result property="studentId" column="student_id"></result>
+		<result column="optional_course_id" property="optionalCourseId"></result>
+		<association property="student" javaType="student">
+			<id property="id" column="id"></id>
+			<result property="sn" column="sn" ></result>
+			<result property="clazzId" column="clazz_id"></result>
+			<result property="name" column="name"></result>
+		</association>
+		<association property="optionalCourse"  javaType="OptionalCourse">
+			<id property="id" column="OptionalCourseId"></id>
+			<result property="name" column="optionalCourseName"></result>
+		</association>
+	</resultMap>
+
+	<!--<select id="findByName" parameterType="String" resultType="Grade">-->
+		<!--select * from grade where name = #{name}-->
+	<!--</select>-->
+
+  	<select id="findList" resultMap="gradeMap">
+		select grade.*,student.*,optional_course.name as optionalCourseName,optional_course.id as OptionalCourseId
+		 from optional_course,student,grade where 1 = 1
+		 and student.id = grade.student_id
+		 and grade.optional_course_id = optional_course.id
+
+		<if test="studentId != null">
+			and student_id = #{studentId}
+		</if>
+		<if test="optionalCourseId != null">
+			and optional_course_id = #{optionalCourseId}
+		</if>
+  		limit #{offset},#{pageSize}
+  	</select>
+
+  	<select id="findAll" resultType="Grade">
+  		select * from grade
+  	</select>
+
+	<select id="getTotal" resultType="int">
+		select count(id) from grade where 1 = 1
+		<if test="studentId != null">
+			and student_id = #{studentId}
+		</if>
+		<if test="optionalCourseId != null">
+			and optional_course_id = #{optionalCourseId}
+		</if>
+		<!--<if test="teacherId != null">-->
+			<!--and teacher_id = #{teacherId}-->
+		<!--</if>-->
+	</select>
+
+
+	<update id="add">
+		insert into grade(id,student_id,optional_course_id,score,gpa) values
+		 (null,#{studentId},#{optionalCourseId},#{score},#{gpa})
+	</update>
+
+	<update id="edit">
+		update grade set score = #{score},gpa= #{gpa} where id = #{id}
+	</update>
+
+	<update id="delete">
+		delete from grade where id in (${value })
+	</update>
+
+	<select id="findExit" resultType="SelectedCourse">
+		select * from grade where
+	    student_id = #{studentId}
+		and optional_course_id = #{optionalCourseId}
+	</select>
+</mapper>

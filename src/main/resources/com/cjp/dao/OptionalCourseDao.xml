@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cjp.dao.OptionalCourseDao">
+
+	<select id="findByName" parameterType="String" resultType="OptionalCourse">
+		select * from optional_course where name = #{name}
+	</select>
+
+  	<select id="findList" parameterType="Map" resultType="OptionalCourse">
+  		select * from optional_course where 1=1
+  		<if test="name != null">
+  			and name like #{name}
+  		</if>
+		<if test="teacherId != null">
+			and teacher_id = #{teacherId}
+		</if>
+  		limit #{offset},#{pageSize}
+  	</select>
+
+  	<select id="findAll" resultType="OptionalCourse">
+  		select * from optional_course
+  	</select>
+
+	<select id="getTotal" parameterType="Map" resultType="int">
+		select count(id) from optional_course where 1 = 1
+		<if test="name !=null">
+			and name like #{name}
+		</if>
+		<if test="teacherId != null">
+			and teacher_id = #{teacherId}
+		</if>
+	</select>
+
+
+	<update id="add">
+		insert into optional_course values
+		 (null,#{teacherId},#{name},#{courseDate},#{courseLocation},#{selectedNum},#{maxNum})
+	</update>
+
+	<update id="edit">
+		update optional_course set name = #{name},course_date= #{courseDate},teacher_id = #{teacherId},course_location = #{courseLocation},
+		selected_num = #{selectedNum},max_num = #{maxNum} where id = #{id}
+	</update>
+
+	<update id="delete">
+		delete from optional_course where id in (${value })
+	</update>
+</mapper>

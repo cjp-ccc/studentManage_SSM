@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cjp.dao.SelectedCourseDao">
+
+	<select id="findExit" resultType="SelectedCourse">
+		select * from selected_course where
+	    student_id = #{studentId}
+		and optional_course_id = #{optionalCourseId}
+	</select>
+
+	<select id="findByStudentId" resultType="SelectedCourse">
+		select * from selected_course where
+	      student_id = #{studentId}
+	</select>
+
+
+  	<select id="findList" resultType="SelectedCourse">
+  		select * from selected_course where 1 = 1
+		<if test="studentId != null">
+			and student_id = #{studentId}
+		</if>
+		<if test="optionalCourseId != null">
+			and optional_course_id = #{optionalCourseId}
+		</if>
+
+  		limit #{offset},#{pageSize}
+  	</select>
+
+  	<select id="findAll" resultType="SelectedCourse">
+  		select * from selected_course
+  	</select>
+
+	<select id="findOne" resultType="SelectedCourse">
+  		select * from selected_course where id = #{id}
+  	</select>
+
+	<select id="getTotal" resultType="int">
+		select count(id) from selected_course where 1 = 1
+
+		<if test="studentId != null">
+			and student_id = #{studentId}
+		</if>
+		<if test="optionalCourseId != null">
+			and optional_course_id = #{optionalCourseId}
+		</if>
+	</select>
+
+
+	<update id="add">
+		insert into selected_course values
+		 (null,#{studentId},#{optionalCourseId})
+	</update>
+
+	<update id="edit">
+		update selected_course set student_id = #{studentId},optional_course_id= #{optionalCourseId}
+		 where id = #{id}
+	</update>
+
+	<update id="delete">
+		delete from selected_course where id in (${value })
+	</update>
+</mapper>

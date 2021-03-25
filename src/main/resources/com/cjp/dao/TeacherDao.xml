@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cjp.dao.TeacherDao">
+
+	<select id="findByName" parameterType="String" resultType="Teacher">
+		select * from teacher where name = #{name}
+	</select>
+
+  	<select id="findList" parameterType="Map" resultType="Teacher">
+  		select * from teacher where 1=1
+  		<if test="name != null">
+  			and name like #{name}
+  		</if>
+  		<!--<if test="clazzId != null">-->
+  			<!--and clazz_id = #{clazzId}-->
+  		<!--</if>-->
+  		limit #{offset},#{pageSize}
+  	</select>
+
+  	<select id="findAll" resultType="Teacher">
+  		select * from Teacher
+  	</select>
+
+	<select id="getTotal" parameterType="Map" resultType="int">
+		select count(id) from teacher where 1 = 1
+		<if test="name !=null">
+			and name like #{name}
+		</if>
+		<!--<if test="clazzId !=null">-->
+			<!--and clazz_id = #{clazzId}-->
+		<!--</if>-->
+	</select>
+
+
+	<update id="add" parameterType="Teacher">
+		insert into teacher values
+		 (null,#{tn},#{name},#{sex},#{mobile})
+	</update>
+
+	<update id="edit" parameterType="Teacher">
+		update teacher set tn = #{tn},name = #{name},
+		sex = #{sex},mobile = #{mobile} where id = #{id}
+	</update>
+
+	<update id="delete" parameterType="Teacher">
+		delete from teacher where id in (${value })
+	</update>
+</mapper>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cjp.dao.AttendanceDao">
+
+	<select id="findExit" resultType="Attendance">
+		select * from attendance where
+	    student_id = #{studentId}
+		and optional_course_id = #{optionalCourseId}
+	</select>
+
+  	<select id="findList" resultType="attendance">
+  		select id,student_id,optional_course_id,date_format(attend_time,'%Y-%m-%d %H:%i:%s' ) as attendDate from attendance where 1 = 1
+		<if test="studentId != null">
+			and student_id = #{studentId}
+		</if>
+		<if test="optionalCourseId != null">
+			and optional_course_id = #{optionalCourseId}
+		</if>
+  		limit #{offset},#{pageSize}
+  	</select>
+
+  	<select id="findAll" resultType="SelectedCourse">
+  		select * from attendance
+  	</select>
+
+	<select id="findOne" resultType="SelectedCourse">
+  		select * from attendance where id = #{id}
+  	</select>
+
+	<select id="getTotal" resultType="int">
+		select count(id) from attendance where 1 = 1
+
+		<if test="studentId != null">
+			and student_id = #{studentId}
+		</if>
+		<if test="optionalCourseId != null">
+			and optional_course_id = #{optionalCourseId}
+		</if>
+	</select>
+
+
+	<update id="add">
+		insert into attendance(id,student_id,optional_course_id,attend_time) values
+		 (null,#{studentId},#{optionalCourseId},#{attendTime})
+	</update>
+
+	<update id="edit">
+		update attendance set student_id = #{studentId},optional_course_id= #{optionalCourseId},attend_time = #{attendTime}
+		 where id = #{id}
+	</update>
+
+	<update id="delete">
+		delete from attendance where id in (${value })
+	</update>
+</mapper>

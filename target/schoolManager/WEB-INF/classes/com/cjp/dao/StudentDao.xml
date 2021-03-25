@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cjp.dao.StudentDao">
+
+	<select id="findByName" parameterType="String" resultType="Student">
+		select * from student where name = #{name}
+	</select>
+
+  	<select id="findList" parameterType="Map" resultType="Student">
+  		select id,sn,clazz_id,name,password,sex,mobile,date_format(admission_time,'%Y年') as admissionYear from student where 1=1
+  		<if test="name != null">
+  			and name like #{name}
+  		</if>
+  		<if test="clazzId != null">
+  			and clazz_id = #{clazzId}
+  		</if>
+		<if test="admissionTime != null">
+			and year(admission_time) > #{admissionTime}
+		</if>
+  		limit #{offset},#{pageSize}
+  	</select>
+
+  	<select id="findAll" resultType="Student">
+  		select * from Student
+  	</select>
+
+	<select id="getTotal" parameterType="Map" resultType="int">
+		select count(id) from student where 1 = 1
+		<if test="name !=null">
+			and name like #{name}
+		</if>
+		<if test="clazzId !=null">
+			and clazz_id = #{clazzId}
+		</if>
+	</select>
+
+
+	<update id="add" parameterType="Student">
+		insert into student(id,sn,clazz_id,name,password,sex,mobile,admission_time) values
+		 (null,#{sn},#{clazzId},#{name},#{password},#{sex},#{mobile},#{admissionTime})
+	</update>
+
+	<update id="edit" parameterType="Student">
+		update student set sn = #{sn},clazz_id = #{clazzId},name = #{name},
+		password = #{password},sex = #{sex},mobile = #{mobile},admission_time = #{admissionTime} where id = #{id}
+	</update>
+
+	<update id="delete" parameterType="Student">
+		delete from student where id in (${value })
+	</update>
+</mapper>

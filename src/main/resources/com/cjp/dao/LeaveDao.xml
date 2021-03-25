@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cjp.dao.LeaveDao">
+
+	<select id="findList" resultType="Leave">
+		select * from s_leave where 1 = 1
+		<if test="studentId != null">
+		  and student_id = #{studentId}
+		</if>
+		<if test="status != null">
+		  and status = #{status}
+		</if>
+		limit #{offset},#{pageSize}
+	</select>
+
+	<select id="findAll" resultType="Leave">
+		select * from s_leave
+	</select>
+
+	<select id="getTotal" resultType="Integer">
+		select count(id) from s_leave where 1 = 1
+		<if test="studentId != null">
+			and student_id = #{studentId}
+		</if>
+		<if test="status != null">
+			and status = #{status}
+		</if>
+	</select>
+
+	<update id="add">
+		insert into s_leave(student_id,reason,status) values(#{studentId},#{reason},#{status})
+	</update>
+
+	<update id="edit">
+		update s_leave set reason = #{reason} where id = #{id}
+	</update>
+
+	<update id="check">
+		update s_leave set status = #{status},remark = #{remark} where id = #{id}
+	</update>
+
+	<update id="delete">
+		delete from s_leave where id in (${value})
+	</update>
+</mapper>

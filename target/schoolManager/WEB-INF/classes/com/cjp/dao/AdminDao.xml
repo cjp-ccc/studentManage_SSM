@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cjp.dao.AdminDao">
+	<select id="findByAdminName" parameterType="String" resultType="Admin">
+  		select * from admin where name = #{name}
+  	</select>
+
+	<update id="add" parameterType="Admin">
+		insert into admin (name,password) values(#{name},#{password})
+	</update>
+
+	<select id="findList" parameterType="Map" resultType="Admin">
+		select * from admin where name like #{name} limit #{offset},#{pageSize}
+	</select>
+
+	<select id="getTotal" parameterType="Map" resultType="Integer">
+		select count(id) from admin where name like #{name}
+	</select>
+	
+	<update id="edit" parameterType="Admin">
+		update admin set name = #{name},password = #{password} where id = #{id}
+	</update>
+
+	<update id="delete" parameterType="String">
+		delete from admin where id in (${value})
+	</update>
+</mapper>

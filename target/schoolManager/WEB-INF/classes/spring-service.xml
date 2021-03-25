@@ -1,0 +1,22 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--开启注解扫描包：spring 会扫描该包下是否有@Component等注解，有的话会自动加进spring容器中-->
+    <context:component-scan base-package="com.cjp.service"></context:component-scan>
+
+    <!--这个可以使用配置实现，也可以使用 @Service 和 @Autowired 实现-->
+    <!--使用这种方式，dao 层的配置必须要有MapperScannerConfigurer-->
+    <!--这个可以通过idea直接帮我们关联 spring-dao.xml 也可以手动 import-->
+
+
+</beans>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cjp.dao.SCTDao">
+
+
+  	<select id="findList" resultType="StudentCourseTeacher">
+  		select * from student_course_teacher where 1 = 1
+	     and studentId = #{studentId}
+		<if test="optionalCourseId != null">
+			and optionalCourseId = #{optionalCourseId}
+		</if>
+		<if test="teacherId != null">
+			and teacherId = #{teacherId}
+		</if>
+		<if test="teacherName != null">
+			and teacherName = #{teacherName}
+		</if>
+  		limit #{offset},#{pageSize}
+  	</select>
+
+  	<select id="findAll" resultType="StudentCourseTeacher">
+  		select * from student_course_teacher
+  	</select>
+
+	<select id="getTotal" resultType="int">
+		select count(*) from student_course_teacher where 1 = 1
+
+		<if test="studentId != null">
+			and studentId = #{studentId}
+		</if>
+
+	</select>
+
+
+</mapper>

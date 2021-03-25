@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cjp.dao.CourseTeacherDao">
+
+
+  	<select id="findList" parameterType="Map" resultType="CourseTeacher">
+  		select * from course_teacher where 1 = 1
+		<if test="teacherId != null">
+			and teacher_id = #{teacherId}
+		</if>
+		<if test="courseId != null">
+			and course_id = #{courseId}
+		</if>
+
+  		limit #{offset},#{pageSize}
+  	</select>
+
+  	<select id="findAll" resultType="CourseTeacher">
+  		select * from CourseTeacher
+  	</select>
+
+	<select id="getTotal" parameterType="Map" resultType="int">
+		select count(id) from course_teacher where 1 = 1
+
+		<if test="teacherId != null">
+			and teacher_id = #{teacherId}
+		</if>
+		<if test="courseId != null">
+			and course_id = #{courseId}
+		</if>
+	</select>
+
+
+	<update id="add" parameterType="Course">
+		insert into course_teacher values
+		 (null,#{teacherId},#{courseId})
+	</update>
+
+	<update id="edit" parameterType="Course">
+		update course_teacher set teacher_id = #{teacherId},course_id= #{courseId}
+		 where id = #{id}
+	</update>
+
+	<update id="delete" parameterType="Course">
+		delete from course_teacher where id in (${value })
+	</update>
+</mapper>
